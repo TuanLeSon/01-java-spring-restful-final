@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import vn.hoidanit.jobhunter.domain.RestResponse;
 
 @ControllerAdvice
-public class FormatRestResponse implements ResponseBodyAdvice {
+public class FormatRestResponse implements ResponseBodyAdvice {// chay truoc GlobalException
 
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
@@ -28,8 +28,7 @@ public class FormatRestResponse implements ResponseBodyAdvice {
         res.setStatusCode(status);
         if (status >= 400) {
             // case error
-            res.setError("CALL API FAILED");
-            res.setMessage(res);
+            return body; // ko xu ly loi o day
         } else {
             res.setData(body);
             res.setMessage("CALL API SUCCESS");
