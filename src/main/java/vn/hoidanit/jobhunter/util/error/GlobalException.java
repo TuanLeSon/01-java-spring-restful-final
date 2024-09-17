@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import vn.hoidanit.jobhunter.domain.RestResponse;
 
-@RestControllerAdvice
+@RestControllerAdvice // chỉ chạy khi và chỉ khi vào bên trong controller
 public class GlobalException {
-    @ExceptionHandler(value = { IdInvalidException.class,
+    @ExceptionHandler(value = {
             UsernameNotFoundException.class,
             BadCredentialsException.class })
-    public ResponseEntity<RestResponse<Object>> handleIdException(IdInvalidException idException) {
+    public ResponseEntity<RestResponse<Object>> handleIdException(Exception ex) {
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
-        res.setError(idException.getMessage());
+        res.setError(ex.getMessage());
         res.setMessage("Exception occurs...");
         return ResponseEntity.badRequest().body(res);
     }
