@@ -42,7 +42,7 @@ public class UserService {
             currentUser.setName(reqUser.getName());
             currentUser.setEmail(reqUser.getEmail());
             currentUser.setPassword(reqUser.getPassword());
-            return this.userRepository.save(reqUser);
+            return this.userRepository.save(currentUser);
         }
         return currentUser;
     }
