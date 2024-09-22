@@ -96,7 +96,7 @@ public class UserController {
     public ResponseEntity<ResUpdateUserDTO> updateUser(@RequestBody User postManUser) throws IdInvalidException {
         User user = this.userService.handleUpdateUser(postManUser);
         if (user == null) {
-            throw new IdInvalidException("User với id = " + user.getId() + " không tồn tại");
+            throw new IdInvalidException("User với id = " + postManUser.getId() + " không tồn tại");
         }
 
         return ResponseEntity.ok(userService.convertToResUpdateUserDTO(user));
