@@ -11,6 +11,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import com.turkraft.springfilter.parser.InvalidSyntaxException;
 
 import vn.hoidanit.jobhunter.domain.RestResponse;
 
@@ -18,7 +21,8 @@ import vn.hoidanit.jobhunter.domain.RestResponse;
 public class GlobalException {
     @ExceptionHandler(value = {
             UsernameNotFoundException.class,
-            BadCredentialsException.class })
+            BadCredentialsException.class,
+            IdInvalidException.class, })
     public ResponseEntity<RestResponse<Object>> handleIdException(Exception ex) {
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
@@ -27,7 +31,10 @@ public class GlobalException {
         return ResponseEntity.badRequest().body(res);
     }
 
-    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ExceptionHandler(value = { MethodArgumentNotValidException.class
+            // , EmailDuplicateException.class,
+            // IdInvalidException.class
+    })
     public ResponseEntity<RestResponse<Object>> validationError(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
         final List<FieldError> fieldErrors = result.getFieldErrors();
@@ -39,4 +46,23 @@ public class GlobalException {
         return ResponseEntity.badRequest().body(res);
     }
 
+    @ExceptionHandler(value = {
+            NoResourceFoundException.class })
+    public ResponseEntity<RestResponse<Object>> handleNotFoundException(Exception ex) {
+        RestResponse<Object> res = new RestResponse<Object>();
+        res.setStatusCode(HttpStatus.NOT_FOUND.value());
+        res.setError(ex.getMessage());
+        res.setMessage("404 Not Found. URL may not exist...");
+        return ResponseEntity.badRequest().body(res);
+    }
+
+    @ExceptionHandler(value = {
+            InvalidSyntaxException.class })
+    public ResponseEntity<RestResponse<Object>> handleFilterException(Exception ex) {
+        RestResponse<Object> res = new RestResponse<Object>();
+        res.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        res.setError(ex.getMessage());
+        res.setMessage("Filter exception");
+        return ResponseEntity.badRequest().body(res);
+    }
 }
