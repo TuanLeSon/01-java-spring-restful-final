@@ -51,7 +51,7 @@ public class AuthController {
                 loginDTO.getUsername(), loginDTO.getPassword());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        // create a token
+        // set thông tin người dùng đăng nhập vào context để lấy ra sử dụng sau này
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         ResLoginDTO res = new ResLoginDTO();
@@ -90,7 +90,6 @@ public class AuthController {
             userLogin.setId(currentUserDB.getId());
             userLogin.setEmail(currentUserDB.getEmail());
             userLogin.setName(currentUserDB.getName());
-
         }
         return ResponseEntity.ok().body(userLogin);
     }
