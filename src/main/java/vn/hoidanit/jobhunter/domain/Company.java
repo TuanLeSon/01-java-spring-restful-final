@@ -31,10 +31,11 @@ public class Company {
     private String description;
     private String address;
     private String logo;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7") // chỉ thay đổi đinh dạng của frontend
-    private Instant createAt;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
-    private Instant updateAt;
+    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7") // chỉ
+    // thay đổi đinh dạng của frontend
+    private Instant createdAt;
+    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
+    private Instant updatedAt;
 
     private String createdBy;
     private String updatedBy;
@@ -42,12 +43,12 @@ public class Company {
     @PrePersist
     public void handleBeforeCreate() {
         this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
-        this.createAt = Instant.now();
+        this.createdAt = Instant.now();
     }
 
     @PreUpdate
     public void handleBeforeUpdate() {
         this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
-        this.updateAt = Instant.now();
+        this.updatedAt = Instant.now();
     }
 }
