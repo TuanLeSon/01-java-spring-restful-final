@@ -147,4 +147,36 @@ public class AuthController {
                 .body(res);
     }
 
+    @GetMapping("/auth/logout")
+    @ApiMessage("fetch refresh token")
+    public ResponseEntity<Void> getLogoutToken(
+            @CookieValue(name = "refresh_token", defaultValue = "abc") String refresh_token) throws IdInvalidException {
+        if (refresh_token.equals("abc")) {
+            throw new IdInvalidException("Bạn không có refresh token ở cookie");
+        }
+        // check valid
+        Jwt decodedToken = this.securityUtil.checkValidRefreshToken(refresh_token);
+        String email = decodedToken.getSubject();
+        // check user by token + email
+        User currentUser = this.userService.getUserByRefreshTokenAndEmail(refresh_token, email);
+        if (currentUser == null) {
+            throw new IdInvalidException("Refresh Token không hợp lệ");
+        }
+        // issue new token/set refresh token as cookies
+        ResLoginDTO res = new ResLoginDTO();
+        User currentUserDB = this.userService.handleGetUserByUsername(email);
+        if (currentUserDB != null) {
+            ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
+                    currentUserDB.getId(),
+                    currentUserDB.getEmail(),
+                    currentUserDB.getName());
+            res.setUser(userLogin);
+        }
+
+        // update user
+        this.userService.updateUserToken(null, email);
+
+        return ResponseEntity.ok().body(null);
+    }
+
 }
