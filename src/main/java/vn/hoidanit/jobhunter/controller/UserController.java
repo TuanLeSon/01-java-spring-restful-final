@@ -31,11 +31,13 @@ import vn.hoidanit.jobhunter.util.error.IdInvalidException;
 public class UserController {
 
     private final UserService userService;
+
     private final PasswordEncoder passwordEncoder;
 
     public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+
     }
 
     // @GetMapping("/users/create")
@@ -47,6 +49,9 @@ public class UserController {
         }
         String hashPassword = this.passwordEncoder.encode(reqUser.getPassword());
         reqUser.setPassword(hashPassword);
+        // Company company =
+        // this.companyService.fetchCompanyById(reqUser.getCompany().getId());
+        // reqUser.setCompany(company);
         User user = this.userService.handleCreateUser(reqUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.convertToResCreateUserDTO(user));
     }
@@ -94,6 +99,7 @@ public class UserController {
     @PutMapping("/users")
     @ApiMessage("Update a user")
     public ResponseEntity<ResUpdateUserDTO> updateUser(@RequestBody User postManUser) throws IdInvalidException {
+
         User user = this.userService.handleUpdateUser(postManUser);
         if (user == null) {
             throw new IdInvalidException("User với id = " + postManUser.getId() + " không tồn tại");

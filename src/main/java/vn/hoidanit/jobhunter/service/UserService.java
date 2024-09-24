@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.response.ResCreateUserDTO;
 import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDTO;
@@ -19,12 +20,18 @@ import vn.hoidanit.jobhunter.repository.UserRepository;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final CompanyService companyService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, CompanyService companyService) {
         this.userRepository = userRepository;
+        this.companyService = companyService;
     }
 
     public User handleCreateUser(User user) {
+        if (user.getCompany() != null) {
+            Company company = this.companyService.fetchCompanyById(user.getCompany().getId());
+            user.setCompany(company);
+        }
         return this.userRepository.save(user);
     }
 
@@ -35,9 +42,7 @@ public class UserService {
     public User fetchUserById(long id) {
         Optional<User> userOptional = this.userRepository.findById(id);
         if (userOptional.isPresent()) {
-
             return userOptional.get();
-
         }
         return null;
     }
@@ -63,8 +68,29 @@ public class UserService {
                         item.getAddress(),
                         item.getAge(),
                         item.getUpdatedAt(),
-                        item.getCreatedAt()))
+                        item.getCreatedAt(),
+                        new ResUserDTO.CompanyUser(
+                                item.getCompany() != null ? item.getCompany().getId() : 0,
+                                item.getCompany() != null ? item.getCompany().getName() : null)))
                 .collect(Collectors.toList());
+        // List<ResUserDTO> listUser = new ArrayList<ResUserDTO>();
+        // for (User user : pageUser.getContent()) {
+        // ResUserDTO resUserDTO = new ResUserDTO();
+        // resUserDTO.setId(user.getId());
+        // resUserDTO.setEmail(user.getEmail());
+        // resUserDTO.setName(user.getName());
+        // resUserDTO.setGender(user.getGender());
+        // resUserDTO.setAddress(user.getAddress());
+        // resUserDTO.setUpdatedAt(user.getUpdatedAt());
+        // resUserDTO.setCreatedAt(user.getCreatedAt());
+        // ResUserDTO.CompanyUser resCompany = new CompanyUser.ResCompany();
+        // if (user.getCompany() != null) {
+        // resCompany.setId(user.getCompany().getId());
+        // resCompany.setName(user.getCompany().getName());
+        // }
+        // resUserDTO.setCompany(resCompany);
+        // listUser.add(resUserDTO);
+        // }
 
         rs.setResult(listUser);
 
@@ -80,9 +106,14 @@ public class UserService {
             currentUser.setGender(reqUser.getGender());
             currentUser.setAge(reqUser.getAge());
             currentUser.setAddress(reqUser.getAddress());
+            // check company
+            if (reqUser.getCompany() != null) {
+                Company company = this.companyService.fetchCompanyById(reqUser.getCompany().getId());
+                reqUser.setCompany(company);
+            }
+            // update
             currentUser = this.userRepository.save(currentUser);
             return currentUser;
-
         } else {
             return null;
         }
@@ -114,17 +145,30 @@ public class UserService {
         res.setCreatedAt(user.getCreatedAt());
         res.setGender(user.getGender());
         res.setAddress(user.getAddress());
+        ResCreateUserDTO.CompanyUser com = new ResCreateUserDTO.CompanyUser();
+        if (user.getCompany() != null) {
+            com.setId(user.getCompany().getId());
+            com.setName(user.getCompany().getName());
+            res.setCompany(com);
+        }
         return res;
     }
 
     public ResUpdateUserDTO convertToResUpdateUserDTO(User user) {
         ResUpdateUserDTO res = new ResUpdateUserDTO();
         res.setId(user.getId());
+        res.setEmail(user.getEmail());
         res.setName(user.getName());
         res.setAge(user.getAge());
         res.setUpdatedAt(user.getUpdatedAt());
         res.setGender(user.getGender());
         res.setAddress(user.getAddress());
+        ResUpdateUserDTO.CompanyUser com = new ResUpdateUserDTO.CompanyUser();
+        if (user.getCompany() != null) {
+            com.setId(user.getCompany().getId());
+            com.setName(user.getCompany().getName());
+            res.setCompany(com);
+        }
         return res;
     }
 
@@ -138,6 +182,13 @@ public class UserService {
         res.setCreatedAt(user.getCreatedAt());
         res.setGender(user.getGender());
         res.setAddress(user.getAddress());
+        ResUserDTO.CompanyUser com = new ResUserDTO.CompanyUser();
+        if (user.getCompany() != null) {
+            com.setId(user.getCompany().getId());
+            com.setName(user.getCompany().getName());
+            res.setCompany(com);
+        }
+
         return res;
     }
 
@@ -152,4 +203,5 @@ public class UserService {
     public User getUserByRefreshTokenAndEmail(String token, String email) {
         return this.userRepository.findByRefreshTokenAndEmail(token, email);
     }
+
 }

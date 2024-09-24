@@ -29,6 +29,7 @@ public class CompanyController {
 
     public CompanyController(CompanyService companyService) {
         this.companyService = companyService;
+
     }
 
     @PostMapping("/companies")
@@ -38,8 +39,8 @@ public class CompanyController {
 
     @DeleteMapping("/companies/{id}")
     public ResponseEntity<Void> deleteCompany(@PathVariable("id") long id) throws IdInvalidException {
-        if (id >= 1500) {
-            throw new IdInvalidException("Id ko lon hon 1500");
+        if (companyService.fetchCompanyById(id) == null) {
+            throw new IdInvalidException("Company với id = " + id + " không tồn tại");
         }
         this.companyService.handleDeleteCompany(id);
         return ResponseEntity.ok(null);
