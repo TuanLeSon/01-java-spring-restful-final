@@ -15,7 +15,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.turkraft.springfilter.parser.InvalidSyntaxException;
 
-import vn.hoidanit.jobhunter.domain.RestResponse;
+import vn.hoidanit.jobhunter.domain.response.RestResponse;
 
 @RestControllerAdvice // chỉ chạy khi và chỉ khi vào bên trong controller
 public class GlobalException {
