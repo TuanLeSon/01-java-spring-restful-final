@@ -1,4 +1,4 @@
-package vn.hoidanit.jobhunter.config.src.main.java.com.mycompany.myapp.config;
+package vn.hoidanit.jobhunter.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
