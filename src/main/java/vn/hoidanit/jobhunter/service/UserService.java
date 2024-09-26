@@ -73,24 +73,6 @@ public class UserService {
                                 item.getCompany() != null ? item.getCompany().getId() : 0,
                                 item.getCompany() != null ? item.getCompany().getName() : null)))
                 .collect(Collectors.toList());
-        // List<ResUserDTO> listUser = new ArrayList<ResUserDTO>();
-        // for (User user : pageUser.getContent()) {
-        // ResUserDTO resUserDTO = new ResUserDTO();
-        // resUserDTO.setId(user.getId());
-        // resUserDTO.setEmail(user.getEmail());
-        // resUserDTO.setName(user.getName());
-        // resUserDTO.setGender(user.getGender());
-        // resUserDTO.setAddress(user.getAddress());
-        // resUserDTO.setUpdatedAt(user.getUpdatedAt());
-        // resUserDTO.setCreatedAt(user.getCreatedAt());
-        // ResUserDTO.CompanyUser resCompany = new CompanyUser.ResCompany();
-        // if (user.getCompany() != null) {
-        // resCompany.setId(user.getCompany().getId());
-        // resCompany.setName(user.getCompany().getName());
-        // }
-        // resUserDTO.setCompany(resCompany);
-        // listUser.add(resUserDTO);
-        // }
 
         rs.setResult(listUser);
 

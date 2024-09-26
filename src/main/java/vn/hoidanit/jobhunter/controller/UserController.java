@@ -86,12 +86,7 @@ public class UserController {
     // @RequestParam("current") Optional<String> currentOptional,
     // @RequestParam("pageSize") Optional<String> pageSizeOptional
     ) {
-        // String sCurrent = currentOptional.isPresent() ? currentOptional.get() : "";
-        // String sPageSize = pageSizeOptional.isPresent() ? pageSizeOptional.get() :
-        // "";
-        // int current = Integer.parseInt(sCurrent);
-        // int pageSize = Integer.parseInt(sPageSize);
-        // Pageable pageable = PageRequest.of(current - 1, pageSize);
+
         ResultPaginationDTO users = this.userService.fetchAllUser(spec, pageable);
         return ResponseEntity.ok(users);
     }
