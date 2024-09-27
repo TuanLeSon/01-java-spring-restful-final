@@ -9,12 +9,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.Job;
 import vn.hoidanit.jobhunter.domain.Skill;
 import vn.hoidanit.jobhunter.domain.response.ResCreateJobDTO;
 import vn.hoidanit.jobhunter.domain.response.ResJobDTO;
 import vn.hoidanit.jobhunter.domain.response.ResUpdateJobDTO;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
+import vn.hoidanit.jobhunter.repository.CompanyRepository;
 import vn.hoidanit.jobhunter.repository.JobRepository;
 import vn.hoidanit.jobhunter.repository.SkillRepository;
 
@@ -22,16 +24,24 @@ import vn.hoidanit.jobhunter.repository.SkillRepository;
 public class JobService {
     private final JobRepository jobRepository;
     private final SkillRepository skillRepository;
+    private final CompanyService companyService;
 
-    JobService(JobRepository jobRepository, SkillRepository skillRepository) {
+    public JobService(JobRepository jobRepository, SkillRepository skillRepository, CompanyService companyService) {
         this.jobRepository = jobRepository;
         this.skillRepository = skillRepository;
+        this.companyService = companyService;
     }
 
     public Job handleCreateJob(Job job) {
         List<Long> ids = job.getSkills().stream().map(item -> item.getId()).collect(Collectors.toList());
         List<Skill> skills = this.skillRepository.findAllById(ids);
         job.setSkills(skills);
+        if (job.getCompany() != null) {
+            Company company = this.companyService.fetchCompanyById(job.getCompany().getId());
+            if (company != null) {
+                job.setCompany(company);
+            }
+        }
         return this.jobRepository.save(job);
     }
 
@@ -97,6 +107,12 @@ public class JobService {
                 List<Long> ids = reqJob.getSkills().stream().map(item -> item.getId()).collect(Collectors.toList());
                 List<Skill> skills = this.skillRepository.findAllById(ids);
                 currentJob.setSkills(skills);
+            }
+            if (reqJob.getCompany() != null) {
+                Company company = this.companyService.fetchCompanyById(reqJob.getCompany().getId());
+                if (company != null) {
+                    currentJob.setCompany(company);
+                }
             }
             // update
             currentJob = this.jobRepository.save(currentJob);
