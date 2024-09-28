@@ -28,10 +28,11 @@ import vn.hoidanit.jobhunter.util.error.StorageException;
 @RestController
 @RequestMapping("/api/v1")
 public class FileController {
-    private final FileService fileService;
 
     @Value("${hoidanit.upload-file.base-uri}")
     private String baseURI;
+
+    private final FileService fileService;
 
     public FileController(FileService fileService) {
         this.fileService = fileService;
@@ -41,23 +42,28 @@ public class FileController {
     @ApiMessage("Upload single file")
     public ResponseEntity<ResUploadFileDTO> upload(
             @RequestParam(name = "file", required = false) MultipartFile file,
-            @RequestParam("folder") String folder) throws URISyntaxException, IOException, StorageException {
-        // validate
+            @RequestParam("folder") String folder
+
+    ) throws URISyntaxException, IOException, StorageException {
+        // skip validate
         if (file == null || file.isEmpty()) {
             throw new StorageException("File is empty. Please upload a file.");
         }
         String fileName = file.getOriginalFilename();
         List<String> allowedExtensions = Arrays.asList("pdf", "jpg", "jpeg", "png", "doc", "docx");
-        boolean isValid = allowedExtensions.stream().anyMatch(ext -> fileName.toLowerCase().endsWith("." + ext));
+        boolean isValid = allowedExtensions.stream().anyMatch(item -> fileName.toLowerCase().endsWith(item));
 
         if (!isValid) {
-            throw new StorageException("Invalid file extension, only allows " + allowedExtensions.toString());
+            throw new StorageException("Invalid file extension. only allows " + allowedExtensions.toString());
         }
-        // create directory if not exist
+        // create a directory if not exist
         this.fileService.createDirectory(baseURI + folder);
+
         // store file
         String uploadFile = this.fileService.store(file, folder);
+
         ResUploadFileDTO res = new ResUploadFileDTO(uploadFile, Instant.now());
+
         return ResponseEntity.ok().body(res);
     }
 
@@ -86,5 +92,4 @@ public class FileController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
     }
-
 }

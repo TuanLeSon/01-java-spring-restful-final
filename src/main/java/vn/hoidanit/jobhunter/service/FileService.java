@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FileService {
+
     @Value("${hoidanit.upload-file.base-uri}")
     private String baseURI;
 
@@ -36,12 +37,13 @@ public class FileService {
         } else {
             System.out.println(">>> SKIP MAKING DIRECTORY, ALREADY EXISTS");
         }
+
     }
 
-    public String store(MultipartFile file, String folder) throws URISyntaxException,
-            IOException {
+    public String store(MultipartFile file, String folder) throws URISyntaxException, IOException {
         // create unique filename
         String finalName = System.currentTimeMillis() + "-" + file.getOriginalFilename();
+
         URI uri = new URI(baseURI + folder + "/" + finalName);
         Path path = Paths.get(uri);
         try (InputStream inputStream = file.getInputStream()) {
@@ -71,5 +73,4 @@ public class FileService {
         File file = new File(path.toString());
         return new InputStreamResource(new FileInputStream(file));
     }
-
 }

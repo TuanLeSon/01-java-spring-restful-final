@@ -33,8 +33,8 @@ public class CompanyController {
     }
 
     @PostMapping("/companies")
-    public ResponseEntity<Company> createNewCompany(@Valid @RequestBody Company postManCompany) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.companyService.handleCreateCompany(postManCompany));
+    public ResponseEntity<Company> createNewCompany(@Valid @RequestBody Company reqCompany) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.companyService.handleCreateCompany(reqCompany));
     }
 
     @DeleteMapping("/companies/{id}")

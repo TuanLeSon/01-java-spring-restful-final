@@ -58,12 +58,12 @@ public class JobController {
 
     @GetMapping("/jobs/{id}")
     @ApiMessage("fetch job by id")
-    public ResponseEntity<ResJobDTO> getJobById(@PathVariable("id") long id) throws IdInvalidException {
-        if (jobService.fetchJobById(id) == null) {
+    public ResponseEntity<Job> getJobById(@PathVariable("id") long id) throws IdInvalidException {
+        if (this.jobService.fetchJobById(id) == null) {
             throw new IdInvalidException("Job với id = " + id + " không tồn tại");
         }
         Job job = this.jobService.fetchJobById(id);
-        return ResponseEntity.ok(this.jobService.convertToResJobDTO(job));
+        return ResponseEntity.ok(job);
     }
 
     @GetMapping("/jobs")

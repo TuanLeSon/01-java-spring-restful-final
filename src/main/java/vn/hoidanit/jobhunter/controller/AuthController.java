@@ -148,24 +148,29 @@ public class AuthController {
                 .body(res);
     }
 
-    @GetMapping("/auth/logout")
-    @ApiMessage("fetch refresh token")
+    @PostMapping("/auth/logout")
+    @ApiMessage("Logout User")
     public ResponseEntity<Void> logout() throws IdInvalidException {
         String email = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
+
         if (email.equals("")) {
             throw new IdInvalidException("Access Token không hợp lệ");
         }
-        // update user
+
+        // update refresh token = null
         this.userService.updateUserToken(null, email);
-        ResponseCookie deleteSpringCookies = ResponseCookie
+
+        // remove refresh token cookie
+        ResponseCookie deleteSpringCookie = ResponseCookie
                 .from("refresh_token", null)
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
-                .maxAge(0) // thay đổi age
+                .maxAge(0)
                 .build();
+
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, deleteSpringCookies.toString())
+                .header(HttpHeaders.SET_COOKIE, deleteSpringCookie.toString())
                 .body(null);
     }
 
