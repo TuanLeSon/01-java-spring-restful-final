@@ -1,22 +1,26 @@
 package vn.hoidanit.jobhunter.domain.response;
 
 import java.time.Instant;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.hoidanit.jobhunter.domain.Permission;
 
-@Getter
 @Setter
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
-public class ResSkillDTO {
+@AllArgsConstructor
+public class ResRoleDTO {
     private long id;
     private String name;
+    private String description;
+    private Boolean active;
     private Instant createdAt;
     private Instant updatedAt;
-
     private String createdBy;
     private String updatedBy;
+    private List<Permission> permissions;
 }

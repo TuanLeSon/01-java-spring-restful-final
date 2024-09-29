@@ -57,9 +57,7 @@ public class JobService {
     }
 
     public ResultPaginationDTO fetchAllJob(
-            Specification<Job> spec, Pageable pageable
-    // Pageable pageable
-    ) {
+            Specification<Job> spec, Pageable pageable) {
         Page<Job> pageJob = this.jobRepository.findAll(spec, pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
         ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();

@@ -60,8 +60,8 @@ public class SkillService {
                 .stream().map(item -> new ResSkillDTO(
                         item.getId(),
                         item.getName(),
-                        item.getUpdatedAt(),
                         item.getCreatedAt(),
+                        item.getUpdatedAt(),
                         item.getCreatedBy(),
                         item.getUpdatedBy()))
                 .collect(Collectors.toList());

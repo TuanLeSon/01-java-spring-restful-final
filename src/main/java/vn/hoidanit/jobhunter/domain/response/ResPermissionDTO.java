@@ -9,14 +9,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class ResSkillDTO {
+@AllArgsConstructor
+public class ResPermissionDTO {
     private long id;
     private String name;
+    private String apiPath;
+    private String method;
+    private String module;
     private Instant createdAt;
     private Instant updatedAt;
-
     private String createdBy;
     private String updatedBy;
 }
