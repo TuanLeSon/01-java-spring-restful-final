@@ -83,11 +83,13 @@ public class RoleController {
         if (currentRole == null) {
             throw new IdInvalidException("Role với id = " + reqRole.getId() + " không tồn tại");
         }
-        // check name
-        if (currentRole != null && this.roleService.isNameExist(currentRole.getName())
-                && !(currentRole.getName()).equals(reqRole.getName())) {
-            throw new IdInvalidException("Role với name = " + reqRole.getName() + " đã tồn tại");
-        }
+        // // check name
+        // if (currentRole != null &&
+        // this.roleService.isNameExist(currentRole.getName())
+        // && !(currentRole.getName()).equals(reqRole.getName())) {
+        // throw new IdInvalidException("Role với name = " + reqRole.getName() + " đã
+        // tồn tại");
+        // }
 
         Role role = this.roleService.handleUpdateRole(reqRole);
         return ResponseEntity.ok(role);
