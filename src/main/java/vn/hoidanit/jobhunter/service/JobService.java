@@ -153,25 +153,26 @@ public class JobService {
         return res;
     }
 
-    public ResJobDTO convertToResJobDTO(Job job) {
-        ResJobDTO res = new ResJobDTO();
-        res.setId(job.getId());
-        res.setName(job.getName());
-        res.setLocation(job.getLocation());
-        res.setSalary(job.getSalary());
-        res.setQuantity(job.getQuantity());
-        res.setLevel(job.getLevel());
-        res.setStartDate(job.getStartDate());
-        res.setEndDate(job.getEndDate());
-        res.setActive(job.getActive());
-        res.setCreatedAt(job.getCreatedAt());
-        res.setCreatedBy(job.getCreatedBy());
-        res.setUpdatedAt(job.getUpdatedAt());
-        res.setUpdatedBy(job.getUpdatedBy());
-        if (job.getSkills().size() != 0) {
-            List<String> skills = job.getSkills().stream().map(item -> item.getName()).collect(Collectors.toList());
-            res.setSkills(skills);
-        }
-        return res;
-    }
+    // public ResJobDTO convertToResJobDTO(Job job) {
+    // ResJobDTO res = new ResJobDTO();
+    // res.setId(job.getId());
+    // res.setName(job.getName());
+    // res.setLocation(job.getLocation());
+    // res.setSalary(job.getSalary());
+    // res.setQuantity(job.getQuantity());
+    // res.setLevel(job.getLevel());
+    // res.setStartDate(job.getStartDate());
+    // res.setEndDate(job.getEndDate());
+    // res.setActive(job.getActive());
+    // res.setCreatedAt(job.getCreatedAt());
+    // res.setCreatedBy(job.getCreatedBy());
+    // res.setUpdatedAt(job.getUpdatedAt());
+    // res.setUpdatedBy(job.getUpdatedBy());
+    // if (job.getSkills().size() != 0) {
+    // List<String> skills = job.getSkills().stream().map(item ->
+    // item.getName()).collect(Collectors.toList());
+    // res.setSkills(skills);
+    // }
+    // return res;
+    // }
 }
