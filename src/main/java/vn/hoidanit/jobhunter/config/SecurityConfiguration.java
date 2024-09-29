@@ -43,8 +43,8 @@ public class SecurityConfiguration {
 
         String[] whiteList = {
                 "/",
-                "/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/auth/register", "/storage/**",
-                "/api/v1/companies/**", "/api/v1/jobs/**"
+                "/api/v1/auth/login", "/api/v1/auth/refresh", "/storage/**",
+                "/api/v1/companies/**", "/api/v1/jobs/**", "/api/v1/auth/register"
         };
 
         http
@@ -55,13 +55,8 @@ public class SecurityConfiguration {
                                 .requestMatchers(whiteList)
                                 .permitAll()
                                 .anyRequest().authenticated())
-                // .anyRequest().permitAll()
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())
                         .authenticationEntryPoint(customAuthenticationEntryPoint))
-                // .exceptionHandling(
-                // exceptions -> exceptions
-                // .authenticationEntryPoint(customAuthenticationEntryPoint) // 401
-                // .accessDeniedHandler(new BearerTokenAccessDeniedHandler())) // 403
 
                 .formLogin(f -> f.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

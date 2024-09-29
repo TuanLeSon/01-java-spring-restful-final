@@ -66,25 +66,7 @@ public class JobService {
         mt.setPages(pageJob.getTotalPages());
         mt.setTotal(pageJob.getTotalElements());
         rs.setMeta(mt);
-        List<ResJobDTO> listJob = pageJob.getContent()
-                .stream().map(item -> new ResJobDTO(
-                        item.getId(),
-                        item.getName(),
-                        item.getLocation(),
-                        item.getSalary(),
-                        item.getQuantity(),
-                        item.getLevel(),
-                        item.getStartDate(),
-                        item.getEndDate(),
-                        item.getActive(),
-                        item.getCreatedAt(),
-                        item.getCreatedBy(),
-                        item.getUpdatedAt(),
-                        item.getUpdatedBy(),
-                        item.getSkills().size() != 0 ? item.getSkills().stream().map(item1 -> item1.getName())
-                                .collect(Collectors.toList()) : null))
-                .collect(Collectors.toList());
-        rs.setResult(listJob);
+        rs.setResult(pageJob.getContent());
         return rs;
     }
 

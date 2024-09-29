@@ -89,13 +89,9 @@ public class PermissionController {
         if (currentPermission == null) {
             throw new IdInvalidException("Permission với id = " + reqPermission.getId() + " không tồn tại");
         }
-        // check name
-        if (currentPermission != null && this.permissionService.isNameExist(currentPermission.getName())
-                && !(currentPermission.getName()).equals(reqPermission.getName())) {
-            throw new IdInvalidException("Permission với name = " + reqPermission.getName() + " đã tồn tại");
-        }
+
         if (this.permissionService.isPermissionExist(reqPermission)) {
-            if (this.permissionService.isNameExist(currentPermission.getName())) {
+            if (this.permissionService.isNameExist(reqPermission.getName())) {
                 throw new IdInvalidException("Permission đã tồn tại");
             }
         }
