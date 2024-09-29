@@ -40,7 +40,7 @@ public class PermissionController {
                     "Permission " + reqPermission.getName() + " đã tồn tại, vui lòng sử dụng permission khác");
         }
 
-        if (this.permissionService.existsByModuleAndApiAndMethod(reqPermission)) {
+        if (this.permissionService.isPermissionExist(reqPermission)) {
             throw new IdInvalidException(
                     "Permission " + reqPermission.getName() + " đã tồn tại, vui lòng sử dụng permission khác");
         }
@@ -94,11 +94,10 @@ public class PermissionController {
                 && !(currentPermission.getName()).equals(reqPermission.getName())) {
             throw new IdInvalidException("Permission với name = " + reqPermission.getName() + " đã tồn tại");
         }
-        if (this.permissionService.existsByModuleAndApiAndMethod(reqPermission)) {
-            throw new IdInvalidException(
-                    "Permission voi module = " + reqPermission.getModule() + ", apiPath = " + reqPermission.getApiPath()
-                            + ", method = " + reqPermission.getMethod()
-                            + " đã tồn tại, vui lòng sử dụng permission khác");
+        if (this.permissionService.isPermissionExist(reqPermission)) {
+            if (this.permissionService.isNameExist(currentPermission.getName())) {
+                throw new IdInvalidException("Permission đã tồn tại");
+            }
         }
         Permission permission = this.permissionService.handleUpdatePermission(reqPermission);
         return ResponseEntity.ok(permission);

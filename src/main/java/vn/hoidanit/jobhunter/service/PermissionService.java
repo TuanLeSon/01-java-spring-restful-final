@@ -99,7 +99,7 @@ public class PermissionService {
         return null;
     }
 
-    public Boolean existsByModuleAndApiAndMethod(Permission permission) {
+    public Boolean isPermissionExist(Permission permission) {
         return this.permissionRepository.existsByModuleAndApiPathAndMethod(permission.getModule(),
                 permission.getApiPath(),
                 permission.getMethod());
