@@ -18,7 +18,6 @@ import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.Job;
 import vn.hoidanit.jobhunter.domain.response.ResCreateJobDTO;
-import vn.hoidanit.jobhunter.domain.response.ResJobDTO;
 import vn.hoidanit.jobhunter.domain.response.ResUpdateJobDTO;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.service.JobService;
@@ -37,10 +36,6 @@ public class JobController {
     @PostMapping("/jobs")
     @ApiMessage("Create a new job")
     public ResponseEntity<ResCreateJobDTO> createNewJob(@Valid @RequestBody Job reqJob) throws IdInvalidException {
-        // if (jobService.isNameExist(reqJob.getName())) {
-        // throw new IdInvalidException("Job " + reqJob.getName() + " đã tồn tại, vui
-        // lòng sử dụng job khác");
-        // }
         Job job = this.jobService.handleCreateJob(reqJob);
         return ResponseEntity.status(HttpStatus.CREATED).body(this.jobService.convertToResCreateJobDTO(job));
     }
@@ -71,7 +66,6 @@ public class JobController {
     public ResponseEntity<ResultPaginationDTO> getAllJob(
             @Filter Specification<Job> spec,
             Pageable pageable) {
-
         ResultPaginationDTO jobs = this.jobService.fetchAllJob(spec, pageable);
         return ResponseEntity.ok(jobs);
     }
@@ -79,12 +73,10 @@ public class JobController {
     @PutMapping("/jobs")
     @ApiMessage("Update a job")
     public ResponseEntity<ResUpdateJobDTO> updateJob(@RequestBody Job postManJob) throws IdInvalidException {
-
         Job job = this.jobService.handleUpdateJob(postManJob);
         if (job == null) {
             throw new IdInvalidException("Job với id = " + postManJob.getId() + " không tồn tại");
         }
-
         return ResponseEntity.ok(this.jobService.convertToResUpdateJobDTO(job));
     }
 
