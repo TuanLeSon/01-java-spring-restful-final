@@ -20,8 +20,11 @@ public class EmailController {
     @GetMapping("/email")
     @ApiMessage("Send simple email")
     public String sendSimpleEmail() {
-        this.emailService.sendSimpleEmail();
+        // this.emailService.sendSimpleEmail();
+        // this.emailService.sendEmailSync("nautnosel@gmail.com", "Testing from Spring
+        // Boot", "<h1><b>hello</b></h1>",
+        // false, true);
+        this.emailService.sendEmailFromTemplateSync("nautnosel@gmail.com", "Testing from Spring Boot", "job");
         return "ok";
     }
 }
-
