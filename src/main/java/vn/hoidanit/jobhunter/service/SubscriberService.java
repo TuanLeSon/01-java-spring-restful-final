@@ -58,6 +58,9 @@ public class SubscriberService {
     // public void testCron() {
     // System.out.println("TEST CRON");
     // }
+    public Subscriber findByEmail(String email) {
+        return this.subscriberRepository.findByEmail(email);
+    }
 
     public boolean isEmailExist(String email) {
         return this.subscriberRepository.existsByEmail(email);
